@@ -1,0 +1,137 @@
+.ksd-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: rgba(247, 245, 240, 0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid transparent;
+}
+
+.ksd-header.is-stuck {
+  border-bottom-color: var(--border);
+}
+
+.ksd-nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1340px;
+  margin: 0 auto;
+  padding: 14px 24px;
+  gap: 16px;
+}
+
+.ksd-brand-logo {
+  display: flex;
+  align-items: center;
+  z-index: 1002;
+}
+
+.ksd-logo-img {
+  display: block;
+  height: 52px;
+  width: auto;
+  max-width: 160px;
+  object-fit: contain;
+  background: transparent;
+}
+
+.ksd-nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 1002;
+}
+
+.ksd-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 12px 22px;
+  background: var(--accent, #16793B);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.ksd-cta-btn:hover {
+  background: var(--green-dark, #0f5c2c);
+}
+
+.ksd-burger {
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--border);
+  background: #fff;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.ksd-burger span {
+  display: block;
+  width: 18px;
+  height: 1.5px;
+  background: #111;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.ksd-burger.is-open span:nth-child(1) {
+  transform: translateY(6.5px) rotate(45deg);
+}
+
+.ksd-burger.is-open span:nth-child(2) {
+  opacity: 0;
+}
+
+.ksd-burger.is-open span:nth-child(3) {
+  transform: translateY(-6.5px) rotate(-45deg);
+}
+
+.ksd-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1001;
+  background: #f7f5f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 100px 24px 48px;
+}
+
+.ksd-overlay:not(.is-open) {
+  display: none;
+}
+
+.ksd-overlay-nav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: min(560px, 100%);
+}
+
+.ksd-overlay-link {
+  color: #111;
+  text-decoration: none;
+  font-family: var(--font-heading);
+  font-size: clamp(28px, 5vw, 44px);
+  line-height: 1.2;
+  padding: 6px 0;
+}
+
+.ksd-overlay-link.is-active,
+.ksd-overlay-link:hover {
+  color: var(--accent, #16793B);
+}
+
+.ksd-overlay-cta {
+  margin-top: 28px;
+}

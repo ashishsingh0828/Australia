@@ -1,0 +1,220 @@
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Plus+Jakarta+Sans:wght@200..800&display=swap");
+
+:root {
+  --body: #f7f5f0;
+  --black: #111111;
+  --white: #ffffff;
+  --navy: #111111;
+  --navy-dark: #111111;
+  --navy-light: #2a2a2a;
+  --green: #16793B;
+  --green-dark: #0f5c2c;
+  --green-light: #16793B;
+  --orange: #16793B;
+  --orange-light: #16793B;
+  --theme: #16793B;
+  --theme2: #f7f5f0;
+  --theme3: #111111;
+  --title: #111111;
+  --text: #333333;
+  --text2: #6b6b6b;
+  --border: rgba(17, 17, 17, 0.14);
+  --border-2: #e6e2d9;
+  --border-3: #6b6b6b;
+  --border-4: #d9d4c8;
+  --border-5: #333333;
+  --bg-1: #111111;
+  --accent: #16793B;
+  --box-shadow: 0px 8px 30px 0px rgba(17, 17, 17, 0.06);
+  --font-main: "Plus Jakarta Sans", system-ui, sans-serif;
+  --font-heading: 'Playfair Display', 'Cormorant Garamond', 'Georgia', serif;
+  --font-serif: 'Playfair Display', 'Cormorant Garamond', 'Georgia', serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-main);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 28px;
+  color: var(--text);
+  background-color: var(--white);
+  overflow-x: hidden;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  font-family: var(--font-heading);
+  color: var(--title);
+}
+
+p {
+  margin: 0;
+}
+
+button,
+input,
+select,
+textarea {
+  margin: 0;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+button {
+  background-color: transparent;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  text-transform: none;
+}
+
+button:not(:disabled) {
+  cursor: pointer;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--green);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+/* =========================================================
+   KSD HOMES - SIGNATURE SQUARE BUTTONS & HOVER EFFECTS
+   ========================================================= */
+.ksd-btn,
+.btn-primary,
+.link-btn-sq {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  height: 54px;
+  padding: 0 34px;
+  background-color: var(--green, #157A3C);
+  color: #ffffff !important;
+  font-family: var(--font-heading);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: 0;
+  border-radius: 0 !important;
+  cursor: pointer;
+  overflow: hidden;
+  z-index: 1;
+  transition: color 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.ksd-btn::before,
+.btn-primary::before,
+.link-btn-sq::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: var(--orange, #E67E22);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.45s cubic-bezier(0.22, 0.61, 0.36, 1);
+  z-index: -1;
+}
+
+.ksd-btn:hover::before,
+.ksd-btn:focus-visible::before,
+.btn-primary:hover::before,
+.btn-primary:focus-visible::before,
+.link-btn-sq:hover::before,
+.link-btn-sq:focus-visible::before {
+  transform: scaleX(1);
+}
+
+.ksd-btn--orange {
+  background-color: var(--orange, #E67E22);
+}
+
+.ksd-btn--orange::before {
+  background-color: var(--green, #157A3C);
+}
+
+.ksd-btn--outline {
+  background: transparent;
+  color: var(--navy, #0E2A47) !important;
+  border: 1.5px solid var(--navy, #0E2A47);
+}
+
+.ksd-btn--outline::before {
+  background-color: var(--navy, #0E2A47);
+}
+
+.ksd-btn--outline:hover {
+  color: #ffffff !important;
+}
+
+.ksd-btn--white {
+  background: #ffffff;
+  color: var(--navy, #0E2A47) !important;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.ksd-btn--white::before {
+  background-color: var(--orange, #E67E22);
+}
+
+.ksd-btn--white:hover {
+  color: #ffffff !important;
+}
+
+/* =========================================================
+   PAGE FADE & REFRESH TRANSITION
+   ========================================================= */
+.page-fade {
+  animation: ksd-page-in 0.65s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+@keyframes ksd-page-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-fade {
+    animation: none;
+  }
+}
+
+
