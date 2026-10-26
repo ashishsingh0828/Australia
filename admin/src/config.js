@@ -88,7 +88,9 @@ const australiaProjects = {
       { name: "videoHeading", label: "Video heading", wide: true },
       { name: "videoText", label: "Video text", type: "textarea", rows: 3 },
     ] },
-    { title: "Project photography", desc: "Upload several images of this project. Captions appear under each photo, in order.", cols: 3, fields: [
+    { title: "Project photography", desc: "Upload several images of this project. Captions appear under each photo, in order. The live page uses heading left / copy right, then full video, then left image, right image, full image, repeating.", cols: 3, fields: [
+      { name: "beforeImage", label: "Before image", type: "image", help: "Drawing or existing condition. Shown in the first photo pair." },
+      { name: "afterImage", label: "After image", type: "image", help: "Interior direction or completed room." },
       { name: "galleryA", label: "Gallery 1", type: "image" },
       { name: "galleryB", label: "Gallery 2", type: "image" },
       { name: "galleryC", label: "Gallery 3", type: "image" },
@@ -99,6 +101,14 @@ const australiaProjects = {
       { name: "galleryH", label: "Gallery 8", type: "image" },
       { name: "scenes", label: "Photo captions", type: "textarea", rows: 8, wide: true, help: "One per line, in gallery order:  Caption | Short description  (e.g.  Poolside living | The ground floor opens to the alfresco and pool.)" },
       { name: "overlayCaption", label: "Hero overlay line", placeholder: "IN DELIVERY / RESIDENCE", wide: true },
+    ] },
+    { title: "Between-room banners", desc: "Optional full-width images that sit between room chapters. Leave a banner blank to skip it.", cols: 3, fields: [
+      { name: "bannerA", label: "Banner 1", type: "image" },
+      { name: "bannerB", label: "Banner 2", type: "image" },
+      { name: "bannerC", label: "Banner 3", type: "image" },
+      { name: "bannerAfterA", label: "Banner 1 after room", placeholder: "3", help: "Room number after which Banner 1 appears, e.g. 3." },
+      { name: "bannerAfterB", label: "Banner 2 after room", placeholder: "6" },
+      { name: "bannerAfterC", label: "Banner 3 after room", placeholder: "9" },
     ] },
     { title: "Story", fields: [
       { name: "heading", label: "Story heading", wide: true },

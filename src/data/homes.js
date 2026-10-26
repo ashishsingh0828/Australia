@@ -35,22 +35,107 @@ export const FALLBACK_HOMES = [
     image2: PLAN.ground,
     image3: PLAN.upper,
     image4: PLAN.under,
+    beforeImage: IMG.elevFront,
+    afterImage: IMG.dining,
     videoUrl: "",
-    videoHeading: "Walk through the composition",
-    videoText: "A film of this residence will sit here once photography is complete. Until then, the drawings below are the true record of the home.",
+    videoHeading: "",
+    videoText: "",
     scenes: [
-      { image: PLAN.ground, caption: "Ground floor plan", text: "Daily life gathers around a 210 sqm marble main floor, a 45 sqm marble entrance, and a 90 sqm colour-concrete alfresco opening to a 32 sqm pool." },
-      { image: PLAN.upper, caption: "Upper floor plan", text: "An 180 sqm marble main floor includes a 15 sqm marble mandir, ensuites and balconies — rest, prayer and outlook on one level." },
-      { image: PLAN.under, caption: "Undercroft plan", text: "Store, cellar, support spaces and pool plant below, connected by a 30 sqm onyx staircase and lift." },
-      { image: IMG.dining, caption: "Interior direction — dining", text: "Builder interior design direction for gathering rooms. These interiors are studio references, not finished photography of this house." },
-      { image: IMG.bedroom, caption: "Interior direction — rest", text: "Upper-level rooms are planned for rest, ensuite and outlook, with joinery and light specified with the architecture." },
-      { image: IMG.bathroomMarble, caption: "Interior direction — marble wet areas", text: "Marble is specified on the plans for main floors and wet rooms. This is the material language, not a photograph of the completed ensuite." },
+      {
+        image: IMG.elevFront,
+        caption: "Elevation",
+        text: "The street elevation as drawn: rendered masonry planes, deep eaves and a composed arrival sequence.",
+        dimensions: "Front elevation",
+        features: ["Rendered masonry planes", "Deep eaves", "Composed entry"],
+      },
+      {
+        image: IMG.dining,
+        caption: "Dining",
+        text: "A long dining table on marble floors, set for family gatherings and lit from the western court.",
+        dimensions: "6.4 × 4.8 m",
+        features: ["Marble main floors", "Western court light", "Family dining table"],
+      },
+      {
+        image: IMG.diningLight,
+        caption: "Light",
+        text: "Western Australian light washes the main floor through full-height glazing, changing the rooms through the day.",
+        dimensions: "Ground living",
+        features: ["Full-height glazing", "Cross-ventilation", "Stone floors"],
+      },
+      {
+        image: IMG.livingOutlook,
+        caption: "Outlook",
+        text: "Retractable glazing opens living to the pool terrace so indoor and outdoor rooms read as one.",
+        dimensions: "8.2 × 5.6 m",
+        features: ["Retractable glazing", "Pool terrace", "Alfresco dining"],
+      },
+      {
+        image: IMG.bedroom,
+        caption: "Rest",
+        text: "Upper rooms for rest, ensuite and a quiet garden outlook, specified with the same material language as the floors below.",
+        dimensions: "4.6 × 4.2 m",
+        features: ["Ensuite suite", "Garden outlook", "Soft timber joinery"],
+      },
+      {
+        image: IMG.bathroomMarble,
+        caption: "Wet areas",
+        text: "Book-matched marble carries through floors and wet rooms so the bathrooms feel part of the house, not added later.",
+        dimensions: "3.8 × 2.6 m",
+        features: ["Book-matched marble", "Walk-in shower", "Heated floors"],
+      },
+      {
+        image: IMG.joinery,
+        caption: "Joinery",
+        text: "Kitchen joinery is drawn with the plan, hiding services behind calm, handleless fronts and a stone bench.",
+        dimensions: "7.2 × 3.4 m",
+        features: ["Integrated appliances", "Stone benchtop", "Handleless fronts"],
+      },
+      {
+        image: IMG.livingCalm,
+        caption: "Living",
+        text: "A quieter living room with acoustic lining and a fireplace recess, planned with the house rather than furnished after.",
+        dimensions: "7.8 × 5.2 m",
+        features: ["Fireplace recess", "Acoustic lining", "Garden aspect"],
+      },
+      {
+        image: IMG.bedroomWave,
+        caption: "Bedroom",
+        text: "North light and a walk-in robe on the upper level, with plaster walls kept soft so the room stays calm at night.",
+        dimensions: "4.4 × 4.0 m",
+        features: ["Walk-in robe", "North light", "Soft plaster walls"],
+      },
+      {
+        image: IMG.bathroom,
+        caption: "Stone",
+        text: "Honed stone, recessed lighting and a custom vanity keep the wet rooms in the same language as the main floors.",
+        dimensions: "3.2 × 2.4 m",
+        features: ["Honed stone", "Recessed lighting", "Custom vanity"],
+      },
+      {
+        image: IMG.vanity,
+        caption: "Detail",
+        text: "Hardware, stone and timber specified together so every vanity and splashback reads as builder interior design, not fit-out.",
+        dimensions: "Vanity detail",
+        features: ["Custom hardware", "Timber lining", "Stone splashback"],
+      },
+      {
+        image: IMG.cinema,
+        caption: "Cinema",
+        text: "Fibre-optic edge lighting and acoustic panelling, built for late-night screenings without leaking sound into the house.",
+        dimensions: "5.1 × 4.6 m",
+        features: ["Acoustic wall panels", "LED edge lighting", "Recliner seating"],
+      },
+      {
+        image: IMG.diningFormal,
+        caption: "Formal dining",
+        text: "A more formal dining room aligned to the garden, with pendant light and marble underfoot for longer evenings.",
+        dimensions: "5.8 × 4.2 m",
+        features: ["Pendant lighting", "Marble floor", "Garden alignment"],
+      },
     ],
-    heading: "A three-storey boutique home composed as one complete living environment",
+    heading: "A three-storey boutique home, composed as one",
     paragraphs: [
-      "Residence is a three-storey boutique home designed as a complete composition — architecture, builder interior design, materials and how the family lives, considered together. Every level has a clear purpose: arrival, living, and rest.",
-      "The ground floor gathers daily life around a 210 sqm marble main floor, a 45 sqm marble entrance, and a 90 sqm colour-concrete alfresco opening to a 32 sqm pool. A 30 sqm onyx staircase and lift connect the home vertically, so movement through the house feels calm and continuous.",
-      "We do not publish the client’s street address. The drawings here are the project: pool, alfresco, marble floors, mandir and undercroft, resolved as one private family home.",
+      "Residence is a three-storey boutique home — architecture and interiors specified together. Arrival, living and rest, each with a clear purpose.",
     ],
     challengeTitle: "Builder interior design, composed as one",
     challengeText:
@@ -65,6 +150,7 @@ export const FALLBACK_HOMES = [
     resultTitle: "The composition of the home",
     resultText:
       "A boutique Western Australian residence where form, function, proportion and material work together. Presented as a private family home — designed for how they live today and tomorrow.",
+    banners: [],
   },
   {
     slug: "port-coogee-residence",
@@ -92,19 +178,79 @@ export const FALLBACK_HOMES = [
     image2: "",
     image3: "",
     image4: "",
+    beforeImage: IMG.livingCalm,
+    afterImage: IMG.livingOutlook,
     videoUrl: "",
-    videoHeading: "Drawings as the home takes form",
-    videoText: "Port Coogee is in concept. We will publish this home’s own drawing set as it is resolved — plans that belong to this project, not another.",
+    videoHeading: "",
+    videoText: "",
     scenes: [
-      { image: IMG.livingOutlook, caption: "Conceptual outlook", text: "Light, proportion and indoor–outdoor living for a coastal Western Australian site. Drawings are in development with our builder interior design team." },
-      { image: IMG.livingCalm, caption: "Conceptual living", text: "Calm rooms and Western Australian light, composed as one with the architecture." },
-      { image: IMG.bedroomTimber, caption: "Conceptual rest", text: "Bedroom language for the upcoming home — studio direction, not a finished photograph of this site." },
+      {
+        image: IMG.livingCalm,
+        caption: "Brief",
+        text: "The first rooms are drawn as calm volumes — low contrast, garden aspect and space for a family to settle on the coast.",
+        dimensions: "Concept living",
+        features: ["Garden aspect", "Low-contrast palette", "Settled volumes"],
+      },
+      {
+        image: IMG.livingOutlook,
+        caption: "Outlook",
+        text: "Outlook and light set the plan: living opens toward the water and the terrace, not a corridor of leftover rooms.",
+        dimensions: "8.0 × 5.4 m",
+        features: ["Coastal outlook", "Terrace living", "Full-height glass"],
+      },
+      {
+        image: IMG.bedroomTimber,
+        caption: "Rest",
+        text: "Bedroom language for the upcoming home — timber lining, a quieter palette and morning light from the east.",
+        dimensions: "4.5 × 4.1 m",
+        features: ["Timber lining", "East light", "Quiet palette"],
+      },
+      {
+        image: IMG.diningLight,
+        caption: "Dining",
+        text: "A gathering room planned around a long table, with western light and a clear line to outdoor dining.",
+        dimensions: "6.2 × 4.6 m",
+        features: ["Long dining table", "Western light", "Outdoor alignment"],
+      },
+      {
+        image: IMG.bedroomWarm,
+        caption: "Bedroom",
+        text: "Warm plaster, soft textiles and a garden window so the upper rooms feel private without shutting out the coast.",
+        dimensions: "4.3 × 3.9 m",
+        features: ["Warm plaster", "Garden window", "Soft textiles"],
+      },
+      {
+        image: IMG.bathroomModern,
+        caption: "Wet areas",
+        text: "Stone, timber and a walk-in shower specified as one wet-room language, ready for the drawings to lock in.",
+        dimensions: "3.6 × 2.5 m",
+        features: ["Stone wet rooms", "Walk-in shower", "Timber lining"],
+      },
+      {
+        image: IMG.joinery,
+        caption: "Joinery",
+        text: "Joinery is specified with the plan so kitchens and robes sit in the architecture, not as later furniture.",
+        dimensions: "6.8 × 3.2 m",
+        features: ["Integrated kitchen", "Handleless fronts", "Stone bench"],
+      },
+      {
+        image: IMG.cinema,
+        caption: "Cinema",
+        text: "A dark, acoustically lined room with recliner seating and concealed lighting for weekend films.",
+        dimensions: "5.0 × 4.4 m",
+        features: ["Acoustic lining", "Concealed lighting", "Recliner seating"],
+      },
+      {
+        image: IMG.vanity,
+        caption: "Detail",
+        text: "Vanity, hardware and stone resolve together as the drawings tighten — the same care as a finished KSD home.",
+        dimensions: "Vanity detail",
+        features: ["Custom vanity", "Specified hardware", "Stone splashback"],
+      },
     ],
-    heading: "An upcoming three-storey boutique home on the Western Australian coast",
+    heading: "An upcoming boutique home on the Western Australian coast",
     paragraphs: [
-      "Port Coogee Residence is an upcoming KSD Homes commission in Western Australia — a three-storey boutique home conceived with the same combined visionary: licensed builder and interior design under one roof.",
-      "The project is in conceptual design. Drawings, interiors and specification are in development with our Perth team. We will share this home as a finished composition when it is ready — without publishing the client’s address.",
-      "Until then, the page is honest about where the work sits: an upcoming coastal residence, designed for light, privacy and indoor–outdoor living.",
+      "Port Coogee Residence is an upcoming three-storey home — licensed builder and interior design under one roof. Drawings are in development.",
     ],
     challengeTitle: "Designed for the way they will live",
     challengeText:
@@ -119,10 +265,28 @@ export const FALLBACK_HOMES = [
     resultTitle: "A home still taking form",
     resultText:
       "Port Coogee Residence is in the studio now. It will be delivered as a complete KSD home: architecture, builder interior design, and the way the family experience the space.",
+    banners: [],
   },
 ];
 
 const pickImage = (...candidates) => candidates.find(Boolean) || "";
+
+const WEAK_COPY = /quieter room in the composition|as drawn\.?$|interior direction|as the concept|considered with the house|specified with the builder|material language for wet rooms|proportion and material|together\.?$/i;
+
+function isWeakCopy(text = "") {
+  const t = String(text).trim();
+  return !t || t.length < 36 || WEAK_COPY.test(t);
+}
+
+function sceneFromFallback(fallbackScene = {}, image, caption, text) {
+  return {
+    image: image || fallbackScene.image || "",
+    caption: caption || fallbackScene.caption || "",
+    text: isWeakCopy(text) ? (fallbackScene.text || text || "") : text,
+    dimensions: fallbackScene.dimensions || "",
+    features: Array.isArray(fallbackScene.features) ? fallbackScene.features : [],
+  };
+}
 
 function displayTitle(title = "") {
   return /sharma/i.test(title) ? "Residence" : title;
@@ -147,14 +311,12 @@ export function mapHome(p = {}, idx = 0) {
     .filter(Boolean);
   const scenePairs = p.scenes ? pairs(p.scenes) : [];
   const scenes = scenePairs.length
-    ? scenePairs.map(([caption, text], i) => ({
-      caption,
-      text,
-      image: gallery[i] || fallback.scenes?.[i]?.image || fallback.image,
-    }))
+    ? scenePairs.map(([caption, text], i) =>
+      sceneFromFallback(fallback.scenes?.[i], gallery[i] || fallback.scenes?.[i]?.image || fallback.image, caption, text)
+    )
     : (gallery.length
-      ? gallery.map((image, i) => ({ image, caption: fallback.scenes?.[i]?.caption || "", text: fallback.scenes?.[i]?.text || "" }))
-      : fallback.scenes || []);
+      ? gallery.map((image, i) => sceneFromFallback(fallback.scenes?.[i], image))
+      : (fallback.scenes || []).map((scene) => sceneFromFallback(scene, scene.image)));
 
   const storeys = p.storeys || fallback.storeys || "";
   const category = p.category || p.projectType || fallback.category;
@@ -199,6 +361,8 @@ export function mapHome(p = {}, idx = 0) {
     videoUrl: p.videoUrl || fallback.videoUrl || "",
     videoHeading: p.videoHeading || fallback.videoHeading || "",
     videoText: p.videoText || fallback.videoText || "",
+    beforeImage: pickImage(siteImage(p.beforeImage), fallback.beforeImage),
+    afterImage: pickImage(siteImage(p.afterImage), imageA, fallback.afterImage),
     heading: p.heading || p.subtitle || fallback.heading,
     paragraphs: p.paragraphs ? paras(p.paragraphs) : fallback.paragraphs,
     challengeTitle: p.factsTitle || fallback.challengeTitle,
@@ -207,6 +371,11 @@ export function mapHome(p = {}, idx = 0) {
     overlayCaption: p.overlayCaption || fallback.overlayCaption || "",
     resultTitle: p.resultTitle || fallback.resultTitle,
     resultText: p.result || p.resultText || fallback.resultText,
+    banners: [
+      { src: siteImage(p.bannerA), after: Number(p.bannerAfterA) || 3 },
+      { src: siteImage(p.bannerB), after: Number(p.bannerAfterB) || 6 },
+      { src: siteImage(p.bannerC), after: Number(p.bannerAfterC) || 9 },
+    ].filter((banner) => banner.src),
   };
 }
 
