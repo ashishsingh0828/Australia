@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import "./WhyChooseUs.css";
 
-function useInView() {
+const useInView = () => {
   const ref = useRef(null);
   const [inView, setInView] = useState(false);
   useEffect(() => {
@@ -23,9 +23,8 @@ function useInView() {
     return () => io.disconnect();
   }, []);
   return [ref, inView];
-}
+};
 
-/* ---------- icons ---------- */
 const IconChat = () => (
   <svg
     viewBox="0 0 48 48"
@@ -76,49 +75,47 @@ const ArrowUpRight = () => (
   </svg>
 );
 
-/* ---------- content (edit freely) ---------- */
-const HEADING = ["Why" , " choose", ""," KSD", "Homes"];
+const HEADING = ["Why", "Choose", "KSD", "Homes"];
 
 const LEAD =
-  "Combined visionary: licensed builder and interior design under one roof, so architecture and how you live become one complete home — with a customer-centred approach and a personal touch.";
+  "Architecture, interior design, and construction come together in one Perth studio. We design site-responsive homes around natural light, flowing spaces, and the way you live, and we deliver them with clear contracts and dedicated care.";
 
 const GROUPS = [
   {
-    title: "Builder Interior Design",
+    title: "Integrated Architecture & Build",
     items: [
-      "Licensed boutique home builder",
-      "28+ years team experience",
-      "Architecture and interiors as one",
+      "Licensed boutique custom home builder",
+      "28+ years of combined team experience",
+      "Architecture, interior joinery and construction in one team",
     ],
   },
   {
-    title: "A Personal Process",
+    title: "A Client-Centred Approach",
     items: [
-      "Every project begins with listening",
-      "Customised to how you live",
-      "Western, European & Asian influences",
+      "Site-responsive design for Western Australian conditions",
+      "Council and planning approvals managed for you",
+      "Fixed-price contracts and a smooth handover",
     ],
   },
 ];
 
 const GALLERY = [
-  { src: "/images/ksd-stone-03.jpg", alt: "Dining and natural light" },
-  { src: "/images/ksd-stone-08.jpg", alt: "Calm living interior" },
+  { src: "/Image/banners/kitchen/kitchen-banner-03.jpg", alt: "Plan view of a custom bedroom layout with timber flooring and a curved feature wall" },
+  { src: "/Image/products/slabs/stone-slab-11.jpg", alt: "Bathroom with glass shower screen, lit wall niches and floating vanity" },
 ];
 
 const QUOTE =
-  "We don't simply design spaces. We design the way you experience them — with a personal touch from first conversation to handover.";
+  "“One team looks after the design, the interiors, and the build, so nothing gets lost between the drawings and your finished home.”";
 
-/* ---------- component ---------- */
 export default function WhyChooseUs({
   groups = GROUPS,
-  image = "/images/ksd-stone-07.jpg",
-  imageAlt = "Architecture and outlook composed as one environment",
+  image = "/Image/products/slabs/stone-slab-12.jpg",
+  imageAlt = "Custom bathroom with marble feature wall, timber vanity and chandelier",
   gallery = GALLERY,
   quote = QUOTE,
   lead = LEAD,
-  buttonLabel = "About us",
-  href = "/about",
+  buttonLabel = "Discuss Your Project",
+  href = "/contact",
   onButtonClick,
 }) {
   const [ref, inView] = useInView();
@@ -130,7 +127,6 @@ export default function WhyChooseUs({
       aria-labelledby="wc-heading"
     >
       <div className="wc__inner">
-        {/* ---------------- left: big image + caption ---------------- */}
         <div className="wc__left">
           <figure className="wc__media wc__shine-box" style={{ "--d": "0ms" }}>
             <img src={image} alt={imageAlt} loading="lazy" decoding="async" />
@@ -144,16 +140,14 @@ export default function WhyChooseUs({
           </div>
         </div>
 
-        {/* ---------------- right: content ---------------- */}
         <div className="wc__right">
           <span className="wc__pill wc__fade" style={{ "--d": "0ms" }}>
-            <i aria-hidden="true" /> Why choose us
+            <i aria-hidden="true" /> Why Choose Us
           </span>
 
-          {/* words rise in one by one */}
           <h2 id="wc-heading" className="wc__title" aria-label={HEADING.join(" ")}>
             {HEADING.map((w, i) => (
-              <span className="wc__word" key={w} aria-hidden="true">
+              <span className="wc__word" key={`${w}-${i}`} aria-hidden="true">
                 <span style={{ "--i": i }}>{w}</span>{" "}
               </span>
             ))}

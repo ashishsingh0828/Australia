@@ -3,11 +3,16 @@ import { Link } from "react-router-dom";
 import "./KsdStory.css";
 
 const HEADING = [
-  { text: "Design and build", accent: false },
+  { text: "Architecture and build", accent: false },
   { text: "under one roof", accent: true },
 ];
 
-const CHECKS = ["Licensed boutique home builder", "Builder interior design"];
+const CHECKS = [
+  "Licensed boutique luxury home builder",
+  "Integrated builder interior design",
+  "Site-responsive home design across WA",
+  "Clear, fixed-price contracts",
+];
 
 const Arrow = () => (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -103,11 +108,11 @@ export default function KsdStory() {
           <span className="ksd-story__dots ksd-story__fade" style={{ "--d": "0.6s" }} aria-hidden="true" />
 
           <div className="ksd-story__img ksd-story__img--main" style={{ "--d": "0s" }}>
-            <img src="/images/ksd-stone-03.jpg" alt="KSD Homes dining and natural light" loading="lazy" />
+            <img src="/Image/products/slabs/stone-slab-01.jpg" alt="Luxury dining room with chandelier and marble flooring" loading="lazy" />
           </div>
 
           <div className="ksd-story__img ksd-story__img--sub" style={{ "--d": "0.3s" }}>
-            <img src="/images/ksd-stone-07.jpg" alt="Architecture and outlook" loading="lazy" />
+            <img src="/Image/products/tiles-textures/stone-tile-08.jpg" alt="Bedroom with timber slat feature wall and warm lighting" loading="lazy" />
           </div>
 
           <div className="ksd-story__counter ksd-story__fade" style={{ "--d": "1.1s" }}>
@@ -119,7 +124,7 @@ export default function KsdStory() {
 
           <div className="ksd-story__badge ksd-story__pop" style={{ "--d": "1.3s" }}>
             <span className="ksd-story__badge-num">28+</span>
-            <span className="ksd-story__badge-txt">Years Team Experience</span>
+            <span className="ksd-story__badge-txt">Years of Team Experience</span>
           </div>
         </div>
 
@@ -132,7 +137,7 @@ export default function KsdStory() {
           <AnimatedHeading parts={HEADING} />
 
           <p className="ksd-story__text ksd-story__rise" style={{ "--d": "0.8s" }}>
-            KSD Homes Pty Ltd is an emerging architecture and design-led brand in Western Australia. Combined visionary: licensed builder and interior design under one roof, so architecture, materials and how you live are resolved as a single composition — Western, European and Asian expressions, with a cost-effective, customer-centred process.
+            KSD Homes is a licensed boutique builder delivering bespoke custom homes across Western Australia. By bringing architectural drafting, interior design, and construction together in one multidisciplinary studio, we remove the gaps between designers and site trades. Every proportion, material, and structural detail is tailored to your block and designed around how your family lives.
           </p>
 
           <div className="ksd-story__row">
@@ -148,7 +153,7 @@ export default function KsdStory() {
 
               <div className="ksd-story__cta ksd-story__rise" style={{ "--d": "1.15s" }}>
                 <Link to="/about" className="ksd-story__btn">
-                  <span>Explore Our Design Story</span>
+                  <span>Learn About Us</span>
                   <Arrow />
                 </Link>
               </div>
@@ -160,20 +165,20 @@ export default function KsdStory() {
                   <PhoneIcon />
                 </span>
                 <span className="ksd-story__info-body">
-                  <span className="ksd-story__info-sub">Need any help?</span>
-                  <span className="ksd-story__info-title">Talk to our design team</span>
+                  <span className="ksd-story__info-sub">Direct Consultation</span>
+                  <span className="ksd-story__info-title">Discuss Your Project</span>
                 </span>
               </Link>
 
               <div className="ksd-story__info">
                 <img
-                  src="/images/logo/logo.png"
+                  src="/Image/branding/brand-logo.png"
                   alt="KSD Homes"
                   className="ksd-story__avatar"
                 />
                 <span className="ksd-story__info-body">
                   <span className="ksd-story__info-title">KSD Homes Pty Ltd</span>
-                  <span className="ksd-story__info-sub">Carlisle, Perth WA</span>
+                  <span className="ksd-story__info-sub">Perth Studio · Western Australia</span>
                 </span>
               </div>
             </div>

@@ -1,33 +1,34 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import "./ClientFeedback.css";
 
 const TESTIMONIALS = [
   {
-    name: "David & Sarah Miller",
-    role: "Vaucluse Residence, Sydney",
-    rating: 5,
-    avatar: "",
-    text: "Working with KSD Homes transformed our entire living space. The bespoke interior layout, 4-metre mitered Calacatta kitchen island, and bookmatched living room wall exceeded every expectation.",
+    name: "One Team",
+    role: "Architecture, interiors and construction",
+    rating: 0,
+    avatar: "/Image/products/slabs/stone-slab-02.jpg",
+    text: "Architectural drafting, interior finishes, and on-site building are coordinated by one Perth team, so you get clear communication on quality and timelines from day one.",
   },
   {
-    name: "Harrison Wright",
-    role: "Luxury Penthouse Owner, Melbourne",
-    rating: 5,
-    avatar: "",
-    text: "KSD Homes delivers interior stone craftsmanship at the highest tier in Australia. Their spatial planning, adherence to timeline, and flawless stone finishing are simply extraordinary.",
+    name: "Brief to Handover",
+    role: "Turnkey design and construction",
+    rating: 0,
+    avatar: "/Image/products/slabs/stone-slab-06.jpg",
+    text: "Planning approvals, engineering coordination, and custom joinery stay with the same team from the first brief to handover, backed by over 28 years of combined industry experience.",
   },
   {
-    name: "Amelia Hart",
-    role: "Senior Interior Architect, Sydney",
-    rating: 5,
-    avatar: "",
-    text: "I regularly collaborate with KSD Homes on high-end residential interiors. The slabs arrive immaculate, the joints are calibrated to sub-millimeter precision, and our clients are always thrilled.",
+    name: "Active Sites",
+    role: "Ongoing project delivery",
+    rating: 0,
+    avatar: "/Image/branding/brand-logo.png",
+    text: "Our residential projects are in active delivery across Perth, with Port Coogee among our current coastal sites.",
   },
 ];
 
 const HEADING = [
-  { text: "What our clients say", accent: false },
-  { text: "about working with us", accent: true },
+  { text: "How we work", accent: false },
+  { text: "from brief to handover", accent: true },
 ];
 
 const SPEED_MS = 1000;
@@ -126,8 +127,8 @@ function useCountUp(target, start, duration = 1800) {
 
 export default function ClientFeedback({
   items = TESTIMONIALS,
-  image = "/images/ksd-stone-08.jpg",
-  imageAlt = "Calm living interior",
+  image = "/Image/products/tiles-textures/stone-tile-10.jpg",
+  imageAlt = "Calm living lounge with warm lighting and soft seating",
   interval = 5000,
 }) {
   const sectionRef = useRef(null);
@@ -145,8 +146,9 @@ export default function ClientFeedback({
   const [dragging, setDragging] = useState(false);
   const [dragX, setDragX] = useState(0);
 
-  const average = total
-    ? items.reduce((sum, t) => sum + (Number(t.rating) || 0), 0) / total
+  const rated = items.filter((t) => Number(t.rating) > 0);
+  const average = rated.length
+    ? rated.reduce((sum, t) => sum + Number(t.rating), 0) / rated.length
     : 0;
   const counted = useCountUp(average, visible);
 
@@ -199,21 +201,28 @@ export default function ClientFeedback({
     return () => clearTimeout(t);
   }, [index, total, loop]);
 
-  const next = () => {
+  const next = useCallback(() => {
+    if (!loop) return;
     setAnimate(true);
     setIndex((i) => Math.min(i + 1, total + 1));
-  };
+  }, [loop, total]);
 
-  const prev = () => {
+  const prev = useCallback(() => {
+    if (!loop) return;
     setAnimate(true);
     setIndex((i) => Math.max(i - 1, 0));
-  };
+  }, [loop]);
+
+  const goTo = useCallback((real) => {
+    setAnimate(true);
+    setIndex(loop ? real + 1 : real);
+  }, [loop]);
 
   useEffect(() => {
     if (!loop || !visible || dragging) return undefined;
     const t = setTimeout(next, interval);
     return () => clearTimeout(t);
-  }, [index, loop, visible, dragging, interval]);
+  }, [index, loop, visible, dragging, interval, next]);
 
   const onPointerDown = (e) => {
     if (!loop) return;
@@ -270,7 +279,7 @@ export default function ClientFeedback({
 
         <div className="tt__eyebrow tt__rise" style={{ "--d": "0.1s" }}>
           <span className="tt__eyebrow-line" />
-          <span>Client Testimonials</span>
+          <span>Our Approach</span>
         </div>
 
         <AnimatedHeading parts={HEADING} />
@@ -281,7 +290,7 @@ export default function ClientFeedback({
           style={{ "--d": "0.9s" }}
           role="region"
           aria-roledescription="carousel"
-          aria-label="Client testimonials"
+          aria-label="Our approach"
           tabIndex={0}
           onKeyDown={onKeyDown}
           onPointerDown={onPointerDown}
@@ -304,7 +313,7 @@ export default function ClientFeedback({
                   aria-roledescription="slide"
                   aria-label={`${real + 1} of ${total}`}
                 >
-                  <Stars rating={t.rating} />
+                  {t.rating > 0 && <Stars rating={t.rating} />}
 
                   <blockquote className="tt__text">
                     <p>{t.text}</p>
@@ -329,13 +338,43 @@ export default function ClientFeedback({
           </div>
         </div>
 
-        <div className="tt__rating tt__rise" style={{ "--d": "1.2s" }}>
-          <span className="tt__rating-num">{counted.toFixed(1)}</span>
-          <Stars rating={average} />
-          <span className="tt__rating-txt">
-            Based on {total} client {total === 1 ? "review" : "reviews"}
-          </span>
-        </div>
+        {loop && (
+          <div className="tt__nav tt__rise" style={{ "--d": "1.2s" }}>
+            <button type="button" className="tt__arrow" onClick={prev} aria-label="Previous slide">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+                <path d="M15 6l-6 6 6 6" />
+              </svg>
+            </button>
+            <div className="tt__dots" role="tablist" aria-label="Slides">
+              {items.map((item, i) => (
+                <button
+                  key={item.name}
+                  type="button"
+                  role="tab"
+                  aria-selected={(loop ? (index - 1 + total) % total : index) === i}
+                  className={(loop ? (index - 1 + total) % total : index) === i ? "is-on" : ""}
+                  onClick={() => goTo(i)}
+                  aria-label={`Show ${item.name}`}
+                />
+              ))}
+            </div>
+            <button type="button" className="tt__arrow" onClick={next} aria-label="Next slide">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+                <path d="M9 6l6 6-6 6" />
+              </svg>
+            </button>
+          </div>
+        )}
+
+        {average > 0 && (
+          <div className="tt__rating tt__rise" style={{ "--d": "1.35s" }}>
+            <span className="tt__rating-num">{counted.toFixed(1)}</span>
+            <Stars rating={average} />
+            <span className="tt__rating-txt">
+              Based on {rated.length} client {rated.length === 1 ? "review" : "reviews"}
+            </span>
+          </div>
+        )}
       </div>
     </section>
   );

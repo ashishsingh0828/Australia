@@ -1,15 +1,28 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useApi } from "../../api";
-import { mergeHomes } from "../../data/homes";
+import { mergeHomes, cleanText, imgKey } from "../../data/homes";
 import "./Project.css";
 
-const FILTERS = ["Residence", "Interior", "Upcoming"];
+const FILTERS = ["Residence", "Interior", "Ongoing"];
 
 function labelOf(home) {
-  if (/upcoming/i.test(home.collection || home.status || "")) return "Upcoming";
-  if (/interior/i.test(home.collection || home.scope || home.category || "")) return "Interior";
+  const collection = String(home.collection || "").toLowerCase();
+  const status = String(home.status || "").toLowerCase();
+  if (
+    collection.includes("ongoing") ||
+    status.includes("ongoing") ||
+    collection.includes("upcoming") ||
+    status.includes("upcoming")
+  ) {
+    return "Ongoing";
+  }
+  if (collection === "interior" || collection.startsWith("interior")) return "Interior";
   return "Residence";
+}
+
+function formatStatus(status = "") {
+  return cleanText(status) || "Ongoing";
 }
 
 export default function Project({ variant = "page" }) {
@@ -23,11 +36,22 @@ export default function Project({ variant = "page" }) {
   );
   const shown = variant === "home" ? filtered.slice(0, 3) : filtered;
 
+  /* a card never repeats a photo already used by another card */
+  const used = new Set();
+  const cardImage = (home) => {
+    const pick = [home.image, home.heroImage, ...(home.gallery || [])]
+      .filter(Boolean)
+      .find((src) => !used.has(imgKey(src)));
+    const src = pick || home.image;
+    used.add(imgKey(src));
+    return src;
+  };
+
   return (
     <section className={`homes-section ${variant === "home" ? "is-home" : ""}`}>
       <div className="homes-intro">
-        <p>Projects</p>
-        <h2>Residence, interiors and upcoming work</h2>
+        <p>Portfolio</p>
+        <h2>Architectural residences, interiors and ongoing work</h2>
       </div>
 
       <div className="homes-filters" role="tablist" aria-label="Project collection">
@@ -46,18 +70,20 @@ export default function Project({ variant = "page" }) {
       </div>
 
       {shown.length === 0 ? (
-        <p className="homes-empty">Coming soon</p>
+        <p className="homes-empty">Projects currently in curation</p>
       ) : (
         <div className="homes-grid">
           {shown.map((home) => (
             <article key={home.slug} className="home-card">
               <Link to={`/projects/${home.slug}`} className="home-card__link" aria-label={`View ${home.title}`}>
-                <img src={home.image} alt={home.title} loading="lazy" />
+                <div className="home-card__img">
+                  <img src={cardImage(home)} alt={home.title} loading="lazy" decoding="async" />
+                </div>
                 <div className="home-card__copy">
                   <span>
                     {/completed|delivered/i.test(home.status)
                       ? `Delivered by our team · ${home.year || "2026"} · ${home.suburb}`
-                      : `${home.status} · ${home.year || "2026"} · ${home.suburb}`}
+                      : `${formatStatus(home.status)} · ${home.year || "2026"} · ${home.suburb}`}
                   </span>
                   <h3>{home.title}</h3>
                 </div>

@@ -1,9 +1,8 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { BRAND } from "../../config";
 import "./AboutUs.css";
 
-/* adds .is-visible once the section scrolls into view */
 function useReveal(threshold = 0.18) {
   const ref = useRef(null);
   const [visible, setVisible] = useState(false);
@@ -32,34 +31,36 @@ function useReveal(threshold = 0.18) {
 }
 
 const FEATURES = [
-  "Licensed builder for high-end boutique homes",
-  "Architecture and interior design as one",
-  "Complete home solutions with a personal touch",
+  "Licensed boutique builder for high-end custom homes",
+  "Seamless integration of architecture and interior design",
+  "Turnkey residential delivery with a dedicated client focus",
 ];
 
 export default function AboutUs({
   images = {
-    top: "/images/ksd-stone-08.jpg",
-    bottom: "/images/ksd-stone-09.jpg",
-    tall: "/images/ksd-stone-07.jpg",
+    top: "/Image/banners/living-room/living-banner-01.jpg",
+    bottom: "/Image/banners/kitchen/kitchen-banner-01.jpg",
+    tall: "/Image/products/slabs/stone-slab-03.jpg",
   },
-  founder = { name: "KSD Leadership", role: "Master Builder & Founder, KSD Homes", image: "" },
-  learnMoreHref = "/about",
+  founder = { name: "KSD Homes", role: "28+ years of team experience, Perth, WA", image: "" },
+  learnMoreHref = "/contact",
 }) {
   const [ref, visible] = useReveal();
 
   const panels = [
-    { key: "top", cls: "about__panel--top", src: images.top, label: "Statuary Marble Living", d: "0.1s" },
-    { key: "bottom", cls: "about__panel--bottom", src: images.bottom, label: "Bookmatched Kitchen Island", d: "0.35s" },
-    { key: "tall", cls: "about__panel--tall", src: images.tall, label: "Architectural Stone Facade", d: "0.2s" },
+    { key: "top", cls: "about__panel--top", src: images.top, label: "Custom Kitchen Joinery", d: "0.1s" },
+    { key: "bottom", cls: "about__panel--bottom", src: images.bottom, label: "Sculpted Timber Bedroom Design", d: "0.35s" },
+    { key: "tall", cls: "about__panel--tall", src: images.tall, label: "Open-Plan Dining Design", d: "0.2s" },
   ];
 
   const swatches = [
-    { name: "Dining and light", src: "/images/ksd-stone-03.jpg" },
-    { name: "Bedroom direction", src: "/images/ksd-stone-12.jpg" },
-    { name: "Joinery", src: "/images/ksd-stone-38.jpg" },
-    { name: "Marble wet areas", src: "/images/ksd-stone-40.jpg" },
+    { name: "Dining and light", src: "/Image/products/tiles-textures/stone-tile-02.jpg" },
+    { name: "Bedroom direction", src: "/Image/products/tiles-textures/stone-tile-05.jpg" },
+    { name: "Custom joinery", src: "/Image/products/slabs/stone-slab-07.jpg" },
+    { name: "Bathrooms and wet areas", src: "/Image/banners/hero/hero-banner-04.jpg" },
   ];
+
+  const logo = BRAND.logo || "/Image/branding/brand-logo.png";
 
   return (
     <section
@@ -68,20 +69,13 @@ export default function AboutUs({
       className={`about ${visible ? "is-visible" : ""}`}
       aria-labelledby="about-title"
     >
-      <svg className="about__veins" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-        <path d="M-40 140 C 240 200, 420 60, 700 140 S 1120 260, 1500 120" />
-        <path d="M-20 760 C 200 700, 420 820, 720 760 S 1120 660, 1500 780" />
-        <path className="gold" d="M900 -10 C 940 120, 880 200, 960 330" />
-      </svg>
-
       <div className="about__inner">
-        {/* Images */}
         <div className="about__media">
           {panels.map((p) => (
             <figure key={p.key} className={`about__panel ${p.cls}`} style={{ "--d": p.d }}>
               <span className="about__panel-line" aria-hidden="true" />
               <div className="about__img">
-                <img src={p.src} alt={`${p.label}`} loading="lazy" decoding="async" draggable="false" />
+                <img src={p.src} alt={p.label} loading="lazy" decoding="async" draggable="false" />
                 <span className="about__shine" aria-hidden="true" />
                 <figcaption className="about__caption">
                   <i aria-hidden="true" />
@@ -91,8 +85,7 @@ export default function AboutUs({
             </figure>
           ))}
 
-          {/* Rotating badge with KSD Logo */}
-          <Link className="about__badge about__reveal" style={{ "--d": "0.7s" }} to={learnMoreHref} aria-label="Learn about KSD Homes">
+          <Link className="about__badge about__reveal" style={{ "--d": "0.7s" }} to={learnMoreHref} aria-label="Contact KSD Homes">
             <svg className="about__ring" viewBox="0 0 200 200" aria-hidden="true">
               <defs>
                 <path id="aboutRingPath" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0" />
@@ -104,28 +97,23 @@ export default function AboutUs({
               </text>
             </svg>
             <span className="about__badge-core" aria-hidden="true">
-              <img
-                src={BRAND.logo || "/images/logo/logo.jpeg"}
-                alt="KSD Homes"
-                style={{ width: "48px", height: "auto", objectFit: "contain" }}
-              />
+              <img src={logo} alt="" />
             </span>
           </Link>
         </div>
 
-        {/* Content */}
         <div className="about__content">
           <span className="about__tag about__reveal" style={{ "--d": "0.1s" }}>
             <i className="about__diamond" aria-hidden="true" />
-            ABOUT KSD HOMES AUSTRALIA
+            About KSD Homes Australia
           </span>
 
           <h2 id="about-title" className="about__title about__reveal" style={{ "--d": "0.25s" }}>
-            Premier luxury home building &amp; architectural stone artistry
+            Bespoke Western Australian Architecture &amp; Boutique Construction
           </h2>
 
           <p className="about__text about__reveal" style={{ "--d": "0.4s" }}>
-            At KSD Homes, we unite custom architectural home construction with hand-selected natural marble, granite, and stone. Every estate we construct is tailored to reflect individual style while adhering to the highest standards of structural integrity.
+            KSD Homes brings luxury residential architecture, interior design, and bespoke craftsmanship together in one Perth-based, multidisciplinary studio. With more than 28 years of combined construction and design experience, we deliver tailored, site-responsive homes from the first concept sketch through to final handover.
           </p>
 
           <div className="about__quote about__reveal" style={{ "--d": "0.55s" }}>
@@ -137,11 +125,11 @@ export default function AboutUs({
               </svg>
             </span>
             <p>
-              &ldquo;We don&apos;t just build houses; we craft bespoke residences that elevate everyday living through timeless architectural stone.&rdquo;
+              &ldquo;We don&rsquo;t simply build houses. One team directs the architecture, materials, and construction, from the very first conversation to handover.&rdquo;
             </p>
           </div>
 
-          <ul className="about__stones about__reveal" style={{ "--d": "0.7s" }} aria-label="Signature stones">
+          <ul className="about__stones about__reveal" style={{ "--d": "0.7s" }} aria-label="Signature interior features">
             {swatches.map((s) => (
               <li key={s.name}>
                 <span className="about__swatch" style={{ backgroundImage: `url("${s.src}")` }} aria-hidden="true" />
@@ -164,12 +152,19 @@ export default function AboutUs({
 
             <div className="about__founder">
               <span className="about__avatar">
-                <img src={BRAND.logo || "/images/logo/logo.jpeg"} alt="KSD" style={{ width: "100%", height: "100%", objectFit: "contain", background: "#fff" }} />
+                <img src={founder.image || logo} alt="KSD Homes" />
               </span>
               <strong>{founder.name}</strong>
               <span>{founder.role}</span>
             </div>
           </div>
+
+          <Link className="about__cta about__reveal" style={{ "--d": "1s" }} to={learnMoreHref}>
+            Discuss your project
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M5 12h14M13 6l6 6-6 6" />
+            </svg>
+          </Link>
         </div>
       </div>
     </section>

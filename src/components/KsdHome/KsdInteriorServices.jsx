@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useApi, siteImage } from "../../api";
 import "./KsdInteriorServices.css";
@@ -12,9 +12,9 @@ const Icon = ({ children }) => (
 const INTERIOR_SERVICES = [
   {
     num: "01",
-    title: "Architecture & Design",
-    desc: "A complete composition — form, proportion and how the family lives, resolved before a brick is laid.",
-    img: "/images/ksd-stone-07.jpg",
+    title: "Architectural Design & Planning",
+    desc: "Site-responsive home design shaped around your block's orientation, slope, and council R-Codes, resolved before construction begins.",
+    img: "/Image/projects/sharma-residence/floor-plan-01.jpg",
     link: "/services/architecture-design",
     icon: (
       <Icon>
@@ -29,8 +29,8 @@ const INTERIOR_SERVICES = [
   {
     num: "02",
     title: "Builder Interior Design",
-    desc: "Materials, joinery and light considered with the architecture, so every room feels like part of the same home.",
-    img: "/images/ksd-stone-09.jpg",
+    desc: "Custom joinery, lighting, and cohesive layouts designed together with the build, so interior and structure work as one.",
+    img: "/Image/products/tiles-textures/stone-tile-04.jpg",
     link: "/services/builder-interior-design",
     icon: (
       <Icon>
@@ -43,9 +43,9 @@ const INTERIOR_SERVICES = [
   },
   {
     num: "03",
-    title: "Complete Home Solutions",
-    desc: "Combined visionary — licensed builder and interior design under one roof. One brief, one team, one finished residence.",
-    img: "/images/ksd-stone-27.jpg",
+    title: "Turnkey Residential Delivery",
+    desc: "One clear sequence from planning approvals and engineering to interiors and handover, managed by a single team.",
+    img: "/Image/products/tiles-textures/stone-tile-01.jpg",
     link: "/services/complete-home-solutions",
     icon: (
       <Icon>
@@ -57,8 +57,8 @@ const INTERIOR_SERVICES = [
   {
     num: "04",
     title: "Licensed Boutique Building",
-    desc: "High-end Western Australian homes delivered by a licensed builder, with a customer-centred process.",
-    img: "/images/ksd-stone-38.jpg",
+    desc: "Quality bespoke construction backed by over 28 years of combined industry experience across Western Australia.",
+    img: "/Image/banners/hero/hero-banner-08.jpg",
     link: "/services/licensed-boutique-building",
     icon: (
       <Icon>
@@ -71,9 +71,9 @@ const INTERIOR_SERVICES = [
   },
   {
     num: "05",
-    title: "Indoor–Outdoor Living",
-    desc: "Alfresco, pool and garden composed with the house so Western Australian light and privacy work together.",
-    img: "/images/ksd-stone-03.jpg",
+    title: "Indoor-Outdoor Living",
+    desc: "Alfresco areas, pool surrounds, and courtyards designed for Western Australia's coastal climate.",
+    img: "/Image/banners/hero/hero-banner-07.jpg",
     link: "/services/indoor-outdoor-living",
     icon: (
       <Icon>
@@ -86,8 +86,8 @@ const INTERIOR_SERVICES = [
   {
     num: "06",
     title: "Materials & Finishes",
-    desc: "Marble, timber, stone and concrete chosen for climate, touch and how they catch the light — each in its right place.",
-    img: "/images/ksd-stone-40.jpg",
+    desc: "Natural stone, quality timbers, and carefully chosen finishes, selected for durability, thermal performance, and how they handle light.",
+    img: "/Image/banners/hero/hero-banner-05.jpg",
     link: "/services/materials-finishes",
     icon: (
       <Icon>
@@ -101,7 +101,7 @@ const INTERIOR_SERVICES = [
   },
 ];
 
-const HEADING = "Architecture, builder interior design and complete homes";
+const HEADING = "Architecture, luxury interiors and turnkey construction";
 
 const Arrow = () => (
   <svg width="22" height="14" viewBox="0 0 26 16" fill="none" aria-hidden="true">
@@ -147,9 +147,15 @@ function AnimatedHeading({ text }) {
   );
 }
 
+const isTouchDevice = () =>
+  typeof window !== "undefined" &&
+  typeof window.matchMedia === "function" &&
+  window.matchMedia("(hover: none)").matches;
+
 export default function KsdInteriorServices() {
   const ref = useRef(null);
   const [visible, setVisible] = useState(false);
+  const [activeIdx, setActiveIdx] = useState(null);
 
   useEffect(() => {
     const node = ref.current;
@@ -174,6 +180,24 @@ export default function KsdInteriorServices() {
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    const close = (e) => {
+      if (!e.target.closest(".ksd-svc__card")) setActiveIdx(null);
+    };
+    document.addEventListener("pointerdown", close);
+    return () => document.removeEventListener("pointerdown", close);
+  }, []);
+
+  const handleCardClick = useCallback(
+    (e, i) => {
+      if (isTouchDevice() && activeIdx !== i) {
+        e.preventDefault();
+        setActiveIdx(i);
+      }
+    },
+    [activeIdx]
+  );
+
   const { data: backendServices } = useApi("/services");
 
   const services = useMemo(() => {
@@ -181,7 +205,7 @@ export default function KsdInteriorServices() {
       return backendServices.slice(0, 6).map((s, idx) => ({
         num: String(idx + 1).padStart(2, "0"),
         title: s.title,
-        desc: s.shortDescription || s.description || "Architecture and builder interior design as one complete home solution.",
+        desc: s.shortDescription || s.description || "Architecture and interior design as one complete home solution.",
         img: siteImage(s.image, INTERIOR_SERVICES[idx % INTERIOR_SERVICES.length].img),
         link: `/services/${s.slug || s._id}`,
         icon: INTERIOR_SERVICES[idx % INTERIOR_SERVICES.length].icon,
@@ -196,7 +220,7 @@ export default function KsdInteriorServices() {
         <div className="ksd-svc__head">
           <div className="ksd-svc__eyebrow ksd-svc__rise" style={{ "--d": "0.05s" }}>
             <span className="ksd-svc__eyebrow-icon" aria-hidden="true" />
-            <span>Our Services</span>
+            <span>Our Expertise</span>
             <span className="ksd-svc__eyebrow-icon" aria-hidden="true" />
           </div>
           <AnimatedHeading text={HEADING} />
@@ -207,7 +231,8 @@ export default function KsdInteriorServices() {
             <Link
               key={item.num}
               to={item.link}
-              className="ksd-svc__card ksd-svc__rise"
+              className={`ksd-svc__card ksd-svc__rise${activeIdx === i ? " is-active" : ""}`}
+              onClick={(e) => handleCardClick(e, i)}
               style={{ "--d": `${0.5 + (i % 3) * 0.15 + Math.floor(i / 3) * 0.2}s` }}
               aria-label={item.title}
             >
@@ -236,7 +261,7 @@ export default function KsdInteriorServices() {
 
         <div className="ksd-svc__foot ksd-svc__rise" style={{ "--d": "0.9s" }}>
           <Link to="/services" className="ksd-svc__btn">
-            <span>View All Services</span>
+            <span>Explore All Services</span>
             <ButtonArrow />
           </Link>
         </div>

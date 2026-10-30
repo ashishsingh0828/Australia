@@ -4,28 +4,28 @@ import "./OurValues.css";
 const VALUES = [
   {
     num: "01",
-    title: "Customer-centred innovation",
-    text: "We enrol products and interiors into the environment around how you live — an oasis of peace, relaxation and personal space.",
-    img: "/images/ksd-stone-38.jpg",
-    alt: "Thoughtfully designed KSD Homes interior",
+    title: "Client-Centred Collaboration",
+    text: "We design and build around your lifestyle and priorities, creating homes with privacy, good proportions, and lasting comfort.",
+    img: "/Image/products/tiles-textures/stone-tile-06.jpg",
+    alt: "Home cinema room designed around the way a family lives",
   },
   {
     num: "02",
-    title: "A personal touch",
-    text: "Successful architecture is created through a strong relationship between the designer, the client and the space. We listen first.",
-    img: "/images/ksd-stone-03.jpg",
-    alt: "Boutique home living environment",
+    title: "Architectural Integrity",
+    text: "Every project responds to Western Australia's coastal climate and natural light. We listen from the first brief so form and function work together.",
+    img: "/Image/products/slabs/stone-slab-14.jpg",
+    alt: "Light-filled bathroom with floor-to-ceiling windows and freestanding bath",
   },
   {
     num: "03",
-    title: "Complete composition",
-    text: "Architecture, interiors, lighting, materials, furniture and technology are designed together as one integrated home solution.",
-    img: "/images/ksd-stone-04.jpg",
-    alt: "Integrated architecture and interior detailing",
+    title: "Unified Turnkey Delivery",
+    text: "Architecture, engineering coordination, interior design, and quality finishes are managed under one roof, so the whole home feels consistent.",
+    img: "/Image/banners/kitchen/kitchen-banner-04.jpg",
+    alt: "Bedroom with custom timber joinery and a curved TV unit",
   },
 ];
 
-const HEADING = "Foundational values behind KSD Homes craft";
+const HEADING = "The principles behind every KSD home";
 
 function AnimatedHeading({ text }) {
   let count = 0;
@@ -95,7 +95,7 @@ export default function OurValues() {
         <div className="ov__head">
           <div className="ov__eyebrow ov__rise" style={{ "--d": "0.05s" }}>
             <span className="ov__eyebrow-icon" aria-hidden="true" />
-            <span>Our Values</span>
+            <span>Our Principles</span>
             <span className="ov__eyebrow-icon" aria-hidden="true" />
           </div>
           <AnimatedHeading text={HEADING} />

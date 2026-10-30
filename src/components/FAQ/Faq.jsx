@@ -3,42 +3,42 @@ import { Link } from "react-router-dom";
 import { BRAND } from "../../config";
 import "./Faq.css";
 
-const MAIN_IMAGE = "/images/ksd-stone-03.jpg";
-const DECO_IMAGE_A = "/images/projects/sharma-plan-02.jpg";
-const DECO_IMAGE_B = "/images/ksd-stone-07.jpg";
+const MAIN_IMAGE = "/Image/products/tiles-textures/stone-tile-02.jpg";
+const DECO_IMAGE_A = "/Image/projects/sharma-residence/floor-plan-03.jpg";
+const DECO_IMAGE_B = "/Image/products/tiles-textures/stone-tile-09.jpg";
 
 const ITEMS = [
   {
     id: 1,
     title: "What does KSD Homes design and build?",
-    text: "KSD Homes Pty Ltd is a licensed builder for high-end boutique homes in Western Australia. Combined visionary: residential architecture, builder interior design, space planning, furniture and finishes, and complete home solutions — from a new three-storey residence to a thoughtful renovation.",
+    text: "KSD Homes is a licensed boutique builder specialising in bespoke luxury residences and multi-storey custom homes across Western Australia. Our integrated approach brings residential design and drafting, interior design, engineering coordination, and high-quality construction together under one team.",
   },
   {
     id: 2,
-    title: "Do you work on new homes and renovations?",
-    text: "Yes. We design and deliver new boutique homes as well as renovation and transformation projects. Current work includes three-storey residences in Western Australia, with Port Coogee among upcoming sites.",
+    title: "Do you build custom designs or pre-designed plans?",
+    text: "Every KSD home is an individual, site-responsive custom build. We design from a blank canvas to make the most of your block's orientation, natural light, coastal breezes, and local council requirements (R-Codes). You can also bring your own architectural plans for our team to review, cost, and build.",
   },
   {
     id: 3,
-    title: "How does the design process start?",
-    text: "Every project begins with listening. We work closely with you to understand lifestyle, preferences and vision, then translate that into architecture and builder interior design that feel personal, practical and lasting. Our team brings 28+ years of combined professional experience.",
+    title: "Do you manage planning approvals and council permits?",
+    text: "Yes. Our team manages the full approvals process with local Perth councils and the Western Australian Planning Commission (WAPC). This includes Development Approvals, R-Codes compliance, Design Review Panel submissions, and Building Permit applications.",
   },
   {
     id: 4,
-    title: "Where is KSD Homes based?",
-    text: "Our studio is at 171 Star Street, Carlisle, Perth WA 6101. Call AJ on +61 414 029 695 (also WhatsApp) or Karl on +61 468 429 212, or email admin@ksdhomes.com.au.",
+    title: "Where are your current project sites located?",
+    text: "We build and renovate luxury homes across Perth's established suburbs and coastal areas. Our current projects include multi-level residences, with Port Coogee among our active sites.",
   },
   {
     id: 5,
-    title: "Is KSD Homes a new company?",
-    text: "KSD Homes is an emerging brand, incorporated in Australia, under the Eagle Group of Companies. The company is starting its journey in 2026 in Western Australia, with future plans across Australia, Asia and India — while our builder interior design team already carry 28+ years of combined professional experience.",
+    title: "How does the design and pre-construction process work?",
+    text: "We start with a site appraisal and a brief about how you live, then move through concept design, 3D visualisation, interior selections, and detailed cost planning. With 28+ years of combined industry experience, our fixed-price building contracts give you clarity on cost before construction begins.",
+  },
+  {
+    id: 6,
+    title: "Where is the KSD Homes design studio based?",
+    text: `Our studio is at ${BRAND.address}. Consultations are available by appointment. You can call us on ${BRAND.phone} or email ${BRAND.email}.`,
   },
 ];
-
-const prefersReducedMotion = () =>
-  typeof window !== "undefined" &&
-  window.matchMedia &&
-  window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 function useInView(threshold = 0.15) {
   const ref = useRef(null);
@@ -65,30 +65,6 @@ function useInView(threshold = 0.15) {
   }, [threshold]);
 
   return [ref, inView];
-}
-
-function useCountUp(target, active, duration = 2000) {
-  const [value, setValue] = useState(0);
-
-  useEffect(() => {
-    if (!active) return undefined;
-    if (prefersReducedMotion()) {
-      setValue(target);
-      return undefined;
-    }
-    let frame;
-    const start = performance.now();
-    const tick = (now) => {
-      const progress = Math.min((now - start) / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      setValue(target * eased);
-      if (progress < 1) frame = requestAnimationFrame(tick);
-    };
-    frame = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(frame);
-  }, [active, target, duration]);
-
-  return value;
 }
 
 function Reveal({ variant = "up", delay = 0, className = "", children }) {
@@ -127,29 +103,6 @@ function SplitHeading({ text }) {
   );
 }
 
-function BrandMark() {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="46" viewBox="0 0 56 64" fill="none" aria-hidden="true">
-      <path
-        d="M43.7701 45.0612C40.5517 47.6735 36.046 49.6327 31.5402 49.6327C21.2414 49.6327 14.1609 41.7959 14.1609 31.3469C14.1609 20.898 21.2414 13.7143 31.5402 13.7143C36.046 13.7143 40.5517 15.0204 43.7701 18.2857L45.7012 20.2449L56 10.449L53.4253 8.48979C47.6322 3.26529 39.9081 0 31.5402 0C13.5173 0 0 13.7143 0 32C0 50.2857 13.5173 64 31.5402 64C39.9081 64 47.6322 60.7347 53.4253 55.5102L56 53.551L45.7012 43.102L43.7701 45.0612Z"
-        fill="#6D1731"
-      />
-      <path
-        d="M30.8966 42.4488C36.5845 42.4488 41.1954 37.7706 41.1954 31.9998C41.1954 26.229 36.5845 21.5508 30.8966 21.5508C25.2087 21.5508 20.5977 26.229 20.5977 31.9998C20.5977 37.7706 25.2087 42.4488 30.8966 42.4488Z"
-        fill="#D1A65F"
-      />
-    </svg>
-  );
-}
-
-function StarIcon() {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-    </svg>
-  );
-}
-
 function RatingCard() {
   const [ref, inView] = useInView(0.4);
 
@@ -158,11 +111,11 @@ function RatingCard() {
       ref={ref}
       className={`fq-rating${inView ? " is-visible" : ""}`}
       role="img"
-      aria-label="28 plus years team experience, licensed boutique builder, Perth"
+      aria-label="28 plus years of team experience, licensed boutique builder, Perth"
     >
       <span className="fq-rating-logo">
         <img
-          src={BRAND.logo || "/images/logo/logo.png"}
+          src={BRAND.logo || "/Image/branding/brand-logo.png"}
           alt="KSD Homes"
           style={{ width: "42px", height: "auto", objectFit: "contain", background: "#fff" }}
         />
@@ -174,7 +127,7 @@ function RatingCard() {
             <span> yrs</span>
           </span>
         </div>
-        <p>Team experience · Licensed boutique builder · Perth WA</p>
+        <p>Team experience · Licensed boutique builder · Perth, WA</p>
       </div>
     </div>
   );
@@ -190,12 +143,9 @@ function ArrowIcon() {
 
 function LearnMoreButton() {
   return (
-    <Link
-      to="/contact"
-      className="fq-btn"
-    >
+    <Link to="/contact" className="fq-btn">
       <span className="fq-btn-bg" />
-      <span className="fq-btn-text">Book Consultation</span>
+      <span className="fq-btn-text">Discuss Your Project</span>
       <span className="fq-btn-icon">
         <ArrowIcon />
       </span>
@@ -223,7 +173,7 @@ function Faq() {
           <Reveal variant="left" className="fq-media-wrap">
             <div className="fq-media">
               <div className="fq-media-image">
-                <img src={MAIN_IMAGE} alt="Marble bathroom interior" loading="lazy" />
+                <img src={MAIN_IMAGE} alt="Custom kitchen with marble island and timber joinery" loading="lazy" />
               </div>
               <RatingCard />
             </div>
@@ -241,8 +191,7 @@ function Faq() {
 
             <Reveal variant="up" delay={0.1}>
               <p className="fq-text">
-                Architecture, builder interior design and complete home solutions — with a customer-centred
-                approach and a personal touch from our Perth studio.
+                Architecture, interior design, and turnkey residential construction, backed by over 28 years of combined industry experience from our Perth studio.
               </p>
             </Reveal>
 
@@ -253,7 +202,7 @@ function Faq() {
                   <Reveal
                     key={item.id}
                     variant="up"
-                    delay={0.15 + index * 0.1}
+                    delay={0.15 + index * 0.08}
                     className={`fq-acc-item${isOpen ? " is-open" : ""}`}
                   >
                     <h3 className="fq-acc-heading">

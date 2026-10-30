@@ -1,12 +1,86 @@
 import { paras, lines, pairs, siteImage } from "../api";
 import { IMG } from "./images";
 
-const PLAN = {
-  ground: IMG.planGround,
-  upper: IMG.planUpper,
-  under: IMG.planUnder,
+/* ==================================================================
+   SITE RULES – edit these three lists, nothing else is needed.
+   ================================================================== */
+
+/* Any word listed here is removed from every text field of every project
+   (client surnames, suppliers, fabricators, brands). Add more as needed. */
+const BLOCKED_TERMS = ["sharma"];
+
+/* Street-name-only titles. Leave "" to keep the current title.
+   Example:  residence: "Ocean Drive"  */
+const STREET_TITLES = {
+  residence: "",
+  "port-coogee-residence": "",
 };
+
+/* Projects that show ONLY the front and back site photos
+   (no extra renders, interiors, plans or gallery photos). */
+const ELEVATION_ONLY = new Set(["residence"]);
+
 const SLUG_ALIASES = { "sharma-residence": "residence" };
+
+/* ------------------------------------------------------------------ */
+
+const esc = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+const BLOCK_RE = BLOCKED_TERMS.length
+  ? new RegExp(BLOCKED_TERMS.map(esc).join("|"), "gi")
+  : null;
+
+/* removes blocked names and turns every "Upcoming" into "Ongoing" */
+export function cleanText(value = "") {
+  let t = String(value ?? "");
+  if (BLOCK_RE) t = t.replace(BLOCK_RE, "");
+  t = t.replace(/\bupcoming\b/gi, (m) => (m[0] === "U" ? "Ongoing" : "ongoing"));
+  return t.replace(/\s{2,}/g, " ").replace(/\s+([,.;:])/g, "$1").trim();
+}
+
+/* same file = same key, whatever the folder, case or ?query */
+export function imgKey(src = "") {
+  return String(src || "").split("?")[0].split("#")[0].split("/").pop().toLowerCase();
+}
+
+/* indoor / outdoor: explicit tag wins, otherwise judged by the caption only */
+const OUTDOOR_CAPTION = /elevation|facade|façade|exterior|outdoor|alfresco|pool|courtyard|landscap|garden|terrace|front|rear|back/i;
+export function spaceOf(item = {}) {
+  const tag = String(item.space || "").toLowerCase();
+  if (tag === "indoor" || tag === "outdoor") return tag;
+  return OUTDOOR_CAPTION.test(String(item.caption || "")) ? "outdoor" : "indoor";
+}
+
+/* admin lines can end with "| indoor" or "| outdoor" – no backend change needed */
+function splitSpace(text = "") {
+  const m = String(text).match(/\|\s*(indoor|outdoor)\s*$/i);
+  return m
+    ? { text: String(text).slice(0, m.index).trim(), space: m[1].toLowerCase() }
+    : { text: String(text), space: "" };
+}
+
+const FRONT_TEXT = "The street elevation: rendered masonry planes, deep eaves and a composed arrival sequence.";
+const BACK_TEXT = "The rear elevation, where the home opens to its garden and outdoor living.";
+
+function elevationScenes(front, back, frontText = "", backText = "") {
+  return [
+    front && {
+      image: front,
+      caption: "Front elevation",
+      text: frontText || FRONT_TEXT,
+      dimensions: "Front elevation",
+      features: ["Rendered masonry planes", "Deep eaves", "Composed entry"],
+      space: "outdoor",
+    },
+    back && {
+      image: back,
+      caption: "Back elevation",
+      text: backText || BACK_TEXT,
+      dimensions: "Rear elevation",
+      features: ["Rear facade", "Outdoor living", "Garden aspect"],
+      space: "outdoor",
+    },
+  ].filter(Boolean);
+}
 
 export const FALLBACK_HOMES = [
   {
@@ -23,34 +97,28 @@ export const FALLBACK_HOMES = [
     location: "Western Australia",
     client: "Private residence",
     conceptHeadline: "The beauty of indoor-outdoor living",
-    planLabels: ["Ground", "Upper", "Undercroft"],
+    planLabels: [],
     storeys: "3",
     beds: "",
     baths: "",
     cars: "",
-    floorArea: "Marble main floors · 210 sqm ground",
+    floorArea: "",
     specLine: "Three storeys · Pool & alfresco · Marble floors",
-    image: IMG.dining,
-    heroImage: IMG.dining,
-    image2: PLAN.ground,
-    image3: PLAN.upper,
-    image4: PLAN.under,
+    image: IMG.elevFront,
+    heroImage: IMG.elevFront,
+    image2: "",
+    image3: "",
+    image4: "",
+    beforeImage: IMG.elevFront,
+    /* set IMG.elevBack in data/images.js to your real back-elevation photo */
+    afterImage: IMG.elevBack || "",
     videoUrl: "",
-    videoHeading: "Walk through the composition",
-    videoText: "A film of this residence will sit here once photography is complete. Until then, the drawings below are the true record of the home.",
-    scenes: [
-      { image: PLAN.ground, caption: "Ground floor plan", text: "Daily life gathers around a 210 sqm marble main floor, a 45 sqm marble entrance, and a 90 sqm colour-concrete alfresco opening to a 32 sqm pool." },
-      { image: PLAN.upper, caption: "Upper floor plan", text: "An 180 sqm marble main floor includes a 15 sqm marble mandir, ensuites and balconies — rest, prayer and outlook on one level." },
-      { image: PLAN.under, caption: "Undercroft plan", text: "Store, cellar, support spaces and pool plant below, connected by a 30 sqm onyx staircase and lift." },
-      { image: IMG.dining, caption: "Interior direction — dining", text: "Builder interior design direction for gathering rooms. These interiors are studio references, not finished photography of this house." },
-      { image: IMG.bedroom, caption: "Interior direction — rest", text: "Upper-level rooms are planned for rest, ensuite and outlook, with joinery and light specified with the architecture." },
-      { image: IMG.bathroomMarble, caption: "Interior direction — marble wet areas", text: "Marble is specified on the plans for main floors and wet rooms. This is the material language, not a photograph of the completed ensuite." },
-    ],
-    heading: "A three-storey boutique home composed as one complete living environment",
+    videoHeading: "",
+    videoText: "",
+    scenes: elevationScenes(IMG.elevFront, IMG.elevBack || ""),
+    heading: "A three-storey boutique home, composed as one",
     paragraphs: [
-      "Residence is a three-storey boutique home designed as a complete composition — architecture, builder interior design, materials and how the family lives, considered together. Every level has a clear purpose: arrival, living, and rest.",
-      "The ground floor gathers daily life around a 210 sqm marble main floor, a 45 sqm marble entrance, and a 90 sqm colour-concrete alfresco opening to a 32 sqm pool. A 30 sqm onyx staircase and lift connect the home vertically, so movement through the house feels calm and continuous.",
-      "We do not publish the client’s street address. The drawings here are the project: pool, alfresco, marble floors, mandir and undercroft, resolved as one private family home.",
+      "Residence is a three-storey boutique home, with architecture and interiors specified together. Arrival, living and rest, each with a clear purpose.",
     ],
     challengeTitle: "Builder interior design, composed as one",
     challengeText:
@@ -60,11 +128,12 @@ export const FALLBACK_HOMES = [
       "Marble main floors with onyx stair and lift core",
       "Alfresco, pool and hardstand for indoor–outdoor living",
       "Dedicated mandir and guest accommodation",
-      "Complete home solution — builder interior design and finishes",
+      "Complete home solution: builder interior design and finishes",
     ],
     resultTitle: "The composition of the home",
     resultText:
-      "A boutique Western Australian residence where form, function, proportion and material work together. Presented as a private family home — designed for how they live today and tomorrow.",
+      "A boutique Western Australian residence where form, function, proportion and material work together. Presented as a private family home, designed for how they live today and tomorrow.",
+    banners: [],
   },
   {
     slug: "port-coogee-residence",
@@ -72,46 +141,115 @@ export const FALLBACK_HOMES = [
     suburb: "Port Coogee",
     shortCode: "",
     featured: true,
-    category: "Upcoming · Conceptual design",
-    status: "Upcoming",
-    collection: "Upcoming",
+    category: "Ongoing · Conceptual design",
+    status: "Ongoing",
+    collection: "Ongoing",
     year: "2026",
-    scope: "Upcoming",
+    scope: "Ongoing",
     location: "Western Australia",
     client: "Private residence",
-    conceptHeadline: "Conceptual design of an upcoming home",
+    conceptHeadline: "Conceptual design of an ongoing home",
     planLabels: [],
     storeys: "3",
     beds: "",
     baths: "",
     cars: "",
     floorArea: "",
-    specLine: "Upcoming · Conceptual design & drawings",
+    specLine: "Ongoing · Conceptual design & drawings",
     image: IMG.livingOutlook,
     heroImage: IMG.livingOutlook,
     image2: "",
     image3: "",
     image4: "",
+    beforeImage: IMG.livingCalm,
+    afterImage: IMG.livingOutlook,
     videoUrl: "",
-    videoHeading: "Drawings as the home takes form",
-    videoText: "Port Coogee is in concept. We will publish this home’s own drawing set as it is resolved — plans that belong to this project, not another.",
+    videoHeading: "",
+    videoText: "",
     scenes: [
-      { image: IMG.livingOutlook, caption: "Conceptual outlook", text: "Light, proportion and indoor–outdoor living for a coastal Western Australian site. Drawings are in development with our builder interior design team." },
-      { image: IMG.livingCalm, caption: "Conceptual living", text: "Calm rooms and Western Australian light, composed as one with the architecture." },
-      { image: IMG.bedroomTimber, caption: "Conceptual rest", text: "Bedroom language for the upcoming home — studio direction, not a finished photograph of this site." },
+      {
+        image: IMG.livingCalm,
+        caption: "Brief",
+        text: "The first rooms are drawn as calm volumes: low contrast, garden aspect and space for a family to settle on the coast.",
+        dimensions: "Concept living",
+        features: ["Garden aspect", "Low-contrast palette", "Settled volumes"],
+        space: "indoor",
+      },
+      {
+        image: IMG.livingOutlook,
+        caption: "Outlook",
+        text: "Outlook and light set the plan: living opens toward the water and the terrace, not a corridor of leftover rooms.",
+        dimensions: "8.0 × 5.4 m",
+        features: ["Coastal outlook", "Terrace living", "Full-height glass"],
+        space: "indoor",
+      },
+      {
+        image: IMG.bedroomTimber,
+        caption: "Rest",
+        text: "Bedroom language for the ongoing home: timber lining, a quieter palette and morning light from the east.",
+        dimensions: "4.5 × 4.1 m",
+        features: ["Timber lining", "East light", "Quiet palette"],
+        space: "indoor",
+      },
+      {
+        image: IMG.diningLight,
+        caption: "Dining",
+        text: "A gathering room planned around a long table, with western light and a clear line to outdoor dining.",
+        dimensions: "6.2 × 4.6 m",
+        features: ["Long dining table", "Western light", "Outdoor alignment"],
+        space: "indoor",
+      },
+      {
+        image: IMG.bedroomWarm,
+        caption: "Bedroom",
+        text: "Warm plaster, soft textiles and a garden window so the upper rooms feel private without shutting out the coast.",
+        dimensions: "4.3 × 3.9 m",
+        features: ["Warm plaster", "Garden window", "Soft textiles"],
+        space: "indoor",
+      },
+      {
+        image: IMG.bathroomModern,
+        caption: "Wet areas",
+        text: "Stone, timber and a walk-in shower specified as one wet-room language, ready for the drawings to lock in.",
+        dimensions: "3.6 × 2.5 m",
+        features: ["Stone wet rooms", "Walk-in shower", "Timber lining"],
+        space: "indoor",
+      },
+      {
+        image: IMG.joinery,
+        caption: "Joinery",
+        text: "Joinery is specified with the plan so kitchens and robes sit in the architecture, not as later furniture.",
+        dimensions: "6.8 × 3.2 m",
+        features: ["Integrated kitchen", "Handleless fronts", "Stone bench"],
+        space: "indoor",
+      },
+      {
+        image: IMG.cinema,
+        caption: "Cinema",
+        text: "A dark, acoustically lined room with recliner seating and concealed lighting for weekend films.",
+        dimensions: "5.0 × 4.4 m",
+        features: ["Acoustic lining", "Concealed lighting", "Recliner seating"],
+        space: "indoor",
+      },
+      {
+        image: IMG.vanity,
+        caption: "Detail",
+        text: "Vanity, hardware and stone resolve together as the drawings tighten, with the same care as a finished KSD home.",
+        dimensions: "Vanity detail",
+        features: ["Custom vanity", "Specified hardware", "Stone splashback"],
+        space: "indoor",
+      },
     ],
-    heading: "An upcoming three-storey boutique home on the Western Australian coast",
+    heading: "An ongoing boutique home on the Western Australian coast",
     paragraphs: [
-      "Port Coogee Residence is an upcoming KSD Homes commission in Western Australia — a three-storey boutique home conceived with the same combined visionary: licensed builder and interior design under one roof.",
-      "The project is in conceptual design. Drawings, interiors and specification are in development with our Perth team. We will share this home as a finished composition when it is ready — without publishing the client’s address.",
-      "Until then, the page is honest about where the work sits: an upcoming coastal residence, designed for light, privacy and indoor–outdoor living.",
+      "Port Coogee Residence is an ongoing three-storey home, with a licensed builder and interior design under one roof. Drawings are in development.",
     ],
     challengeTitle: "Designed for the way they will live",
     challengeText:
-      "An upcoming coastal site asks for a home that feels private, calm and connected to outdoor living. Our approach is the same as every KSD commission: a personal brief, builder interior design, and a customer-centred process.",
+      "An ongoing coastal site asks for a home that feels private, calm and connected to outdoor living. Our approach is the same as every KSD commission: a personal brief, builder interior design, and a customer-centred process.",
     checks: [
-      "Upcoming three-storey boutique home",
-      "Western Australia — Port Coogee",
+      "Ongoing three-storey boutique home",
+      "Western Australia: Port Coogee",
       "Conceptual design and drawings in development",
       "Licensed builder for high-end boutique homes",
       "Client address remains private",
@@ -119,13 +257,28 @@ export const FALLBACK_HOMES = [
     resultTitle: "A home still taking form",
     resultText:
       "Port Coogee Residence is in the studio now. It will be delivered as a complete KSD home: architecture, builder interior design, and the way the family experience the space.",
+    banners: [],
   },
 ];
 
 const pickImage = (...candidates) => candidates.find(Boolean) || "";
 
-function displayTitle(title = "") {
-  return /sharma/i.test(title) ? "Residence" : title;
+const WEAK_COPY = /quieter room in the composition|as drawn\.?$|interior direction|as the concept|considered with the house|specified with the builder|material language for wet rooms|proportion and material|together\.?$/i;
+
+function isWeakCopy(text = "") {
+  const t = String(text).trim();
+  return !t || t.length < 36 || WEAK_COPY.test(t);
+}
+
+function sceneFromFallback(fallbackScene = {}, image, caption, text) {
+  return {
+    image: image || fallbackScene.image || "",
+    caption: caption || fallbackScene.caption || "",
+    text: isWeakCopy(text) ? (fallbackScene.text || text || "") : text,
+    dimensions: fallbackScene.dimensions || "",
+    features: Array.isArray(fallbackScene.features) ? fallbackScene.features : [],
+    space: "",
+  };
 }
 
 function displaySlug(slug = "") {
@@ -136,6 +289,11 @@ export function mapHome(p = {}, idx = 0) {
   const rawSlug = displaySlug(p.slug || "");
   const idxFromSlug = FALLBACK_HOMES.findIndex((h) => h.slug === rawSlug);
   const fallback = FALLBACK_HOMES[idxFromSlug >= 0 ? idxFromSlug : (idx % FALLBACK_HOMES.length)];
+  const slugKey = rawSlug || fallback.slug;
+  /* front/back-only mode: by slug above, OR by the "Show only front and back photos"
+     switch in admin (so it still works if the project title/slug is changed) */
+  const elevOnly = ELEVATION_ONLY.has(slugKey) || p.frontBackOnly === true || p.frontBackOnly === "true";
+
   const imageA = siteImage(p.imageA);
   const imageB = siteImage(p.imageB);
   const hero = siteImage(p.heroImage);
@@ -145,68 +303,100 @@ export function mapHome(p = {}, idx = 0) {
   const gallery = ["galleryA", "galleryB", "galleryC", "galleryD", "galleryE", "galleryF", "galleryG", "galleryH"]
     .map((key) => siteImage(p[key]))
     .filter(Boolean);
+
+  const front = pickImage(siteImage(p.beforeImage), fallback.beforeImage);
+  const back = elevOnly
+    ? pickImage(siteImage(p.afterImage), fallback.afterImage)
+    : pickImage(siteImage(p.afterImage), imageA, fallback.afterImage);
+
   const scenePairs = p.scenes ? pairs(p.scenes) : [];
-  const scenes = scenePairs.length
-    ? scenePairs.map(([caption, text], i) => ({
-      caption,
-      text,
-      image: gallery[i] || fallback.scenes?.[i]?.image || fallback.image,
-    }))
-    : (gallery.length
-      ? gallery.map((image, i) => ({ image, caption: fallback.scenes?.[i]?.caption || "", text: fallback.scenes?.[i]?.text || "" }))
-      : fallback.scenes || []);
+  let scenes;
+  if (elevOnly) {
+    scenes = elevationScenes(front, back, cleanText(p.beforeText), cleanText(p.afterText));
+  } else if (scenePairs.length) {
+    scenes = scenePairs.map(([caption, text], i) => {
+      const s = splitSpace(text);
+      return { ...sceneFromFallback(fallback.scenes?.[i], gallery[i] || fallback.scenes?.[i]?.image || fallback.image, caption, s.text), space: s.space };
+    });
+  } else if (gallery.length) {
+    scenes = gallery.map((image, i) => sceneFromFallback(fallback.scenes?.[i], image));
+  } else {
+    scenes = (fallback.scenes || []).map((scene) => ({ ...sceneFromFallback(scene, scene.image), space: scene.space || "" }));
+  }
+  scenes = scenes.map((s) => ({
+    ...s,
+    caption: cleanText(s.caption),
+    text: cleanText(s.text),
+    dimensions: cleanText(s.dimensions),
+    features: (s.features || []).map(cleanText).filter(Boolean),
+  }));
 
   const storeys = p.storeys || fallback.storeys || "";
-  const category = p.category || p.projectType || fallback.category;
-  const status = p.status || p.date || fallback.status;
-  const location = p.location || fallback.location;
+  const category = cleanText(p.category || p.projectType || fallback.category);
+  const status = cleanText(p.status || p.date || fallback.status);
+  const location = cleanText(p.location || fallback.location);
+  const title = STREET_TITLES[slugKey] || cleanText(p.title) || fallback.title;
 
   return {
-    id: p._id || p.slug || fallback.slug,
+    id: p._id || rawSlug || fallback.slug,
     slug: rawSlug || fallback.slug,
-    title: displayTitle(p.title || fallback.title),
-    suburb: p.suburb || fallback.suburb || displayTitle(p.title || fallback.title),
+    title,
+    suburb: STREET_TITLES[slugKey] || cleanText(p.suburb || fallback.suburb) || title,
     shortCode: p.shortCode || fallback.shortCode || "",
     featured: p.featured !== undefined ? !!p.featured : (fallback.featured !== false),
-    collection: p.collection || fallback.collection || status,
+    collection: cleanText(p.collection || fallback.collection || status),
     year: p.year || p.date || fallback.year || "2026",
-    scope: p.scope || fallback.scope || "",
+    scope: cleanText(p.scope || fallback.scope || ""),
     planLabels: p.planLabels
       ? lines(p.planLabels)
       : (fallback.planLabels || ["Ground", "Upper", "Undercroft"]),
     category,
     status,
     location,
-    client: p.client || "Private residence",
-    conceptHeadline: p.conceptHeadline || fallback.conceptHeadline,
+    client: "Private residence",
+    conceptHeadline: cleanText(p.conceptHeadline || fallback.conceptHeadline),
     storeys,
     beds: p.beds || "",
     baths: p.baths || "",
     cars: p.cars || "",
-    floorArea: p.floorArea || fallback.floorArea || "",
-    specLine:
+    floorArea: cleanText(p.floorArea || fallback.floorArea || ""),
+    specLine: cleanText(
       p.specLine ||
       [storeys && `${storeys} storey${String(storeys) === "1" ? "" : "s"}`, category, status]
         .filter(Boolean)
-        .join(" · "),
-    image: pickImage(imageA, hero, fallback.image),
-    heroImage: pickImage(hero, imageA, fallback.heroImage),
-    image2: pickImage(planA, imageB, fallback.image2),
-    image3: pickImage(planB, fallback.image3),
-    image4: pickImage(planC, fallback.image4),
-    gallery: gallery.length ? gallery : (fallback.scenes || []).map((s) => s.image),
+        .join(" · ")
+    ),
+    image: elevOnly ? pickImage(front, fallback.image) : pickImage(imageA, hero, fallback.image),
+    heroImage: elevOnly ? pickImage(front, fallback.heroImage) : pickImage(hero, imageA, fallback.heroImage),
+    image2: elevOnly ? "" : pickImage(planA, imageB, fallback.image2),
+    image3: elevOnly ? "" : pickImage(planB, fallback.image3),
+    image4: elevOnly ? "" : pickImage(planC, fallback.image4),
+    gallery: elevOnly
+      ? [front, back].filter(Boolean)
+      : (gallery.length ? gallery : (fallback.scenes || []).map((s) => s.image)),
     scenes,
     videoUrl: p.videoUrl || fallback.videoUrl || "",
-    videoHeading: p.videoHeading || fallback.videoHeading || "",
-    videoText: p.videoText || fallback.videoText || "",
-    heading: p.heading || p.subtitle || fallback.heading,
-    paragraphs: p.paragraphs ? paras(p.paragraphs) : fallback.paragraphs,
-    challengeTitle: p.factsTitle || fallback.challengeTitle,
-    challengeText: p.factsText || fallback.challengeText,
-    checks: p.checks ? lines(p.checks) : fallback.checks,
-    overlayCaption: p.overlayCaption || fallback.overlayCaption || "",
-    resultTitle: p.resultTitle || fallback.resultTitle,
-    resultText: p.result || p.resultText || fallback.resultText,
+    videoAfter: Number(p.videoAfter) || Number(fallback.videoAfter) || 0,
+    videoHeading: cleanText(p.videoHeading || fallback.videoHeading || ""),
+    videoText: cleanText(p.videoText || fallback.videoText || ""),
+    beforeImage: front,
+    afterImage: back,
+    beforeText: cleanText(p.beforeText || ""),
+    afterText: cleanText(p.afterText || ""),
+    elevationsOnly: elevOnly,
+    heading: cleanText(p.heading || p.subtitle || fallback.heading),
+    paragraphs: (p.paragraphs ? paras(p.paragraphs) : fallback.paragraphs).map(cleanText),
+    challengeTitle: cleanText(p.factsTitle || fallback.challengeTitle),
+    challengeText: cleanText(p.factsText || fallback.challengeText),
+    checks: (p.checks ? lines(p.checks) : fallback.checks).map(cleanText).filter(Boolean),
+    overlayCaption: cleanText(p.overlayCaption || fallback.overlayCaption || ""),
+    resultTitle: cleanText(p.resultTitle || fallback.resultTitle),
+    resultText: cleanText(p.result || p.resultText || fallback.resultText),
+    banners: [
+      { src: siteImage(p.bannerA), after: Number(p.bannerAfterA) || 3 },
+      { src: siteImage(p.bannerB), after: Number(p.bannerAfterB) || 6 },
+      { src: siteImage(p.bannerC), after: Number(p.bannerAfterC) || 9 },
+    ].filter((banner) => banner.src),
   };
 }
 
@@ -216,9 +406,9 @@ export function mergeHomes(apiList) {
     : [];
   const seen = new Set();
   const homes = [];
-  FALLBACK_HOMES.forEach((home) => {
+  FALLBACK_HOMES.forEach((home, i) => {
     const apiHit = fromApi.find((item) => item.slug === home.slug);
-    homes.push(apiHit || home);
+    homes.push(apiHit || mapHome({ slug: home.slug }, i));
     seen.add(home.slug);
   });
   fromApi.forEach((item) => {
@@ -233,8 +423,8 @@ export function mergeHomes(apiList) {
 export function homeBySlug(slug, apiItem) {
   const resolved = displaySlug(slug);
   const idx = FALLBACK_HOMES.findIndex((h) => h.slug === resolved);
-  if (apiItem) return mapHome({ ...apiItem, slug: resolved, title: displayTitle(apiItem.title) }, idx >= 0 ? idx : 0);
-  return FALLBACK_HOMES[idx] || FALLBACK_HOMES[0];
+  if (apiItem) return mapHome({ ...apiItem, slug: resolved }, idx >= 0 ? idx : 0);
+  return mapHome({ slug: idx >= 0 ? resolved : "" }, idx >= 0 ? idx : 0);
 }
 
 export function specsOf(home) {
