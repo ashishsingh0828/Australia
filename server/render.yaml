@@ -49,11 +49,9 @@ services:
         source: /*
         destination: /index.html
     envVars:
+      # Full HTTPS URL — Render "host" alone can omit .onrender.com and break login
       - key: VITE_API_URL
-        fromService:
-          type: web
-          name: ksd-backend-api
-          property: host
+        value: https://ksd-backend-api.onrender.com
 
   # Australia admin panel (locked to australia site + KSD backend)
   - type: web
@@ -73,12 +71,6 @@ services:
       - key: VITE_SITE
         value: australia
       - key: VITE_API_URL
-        fromService:
-          type: web
-          name: ksd-backend-api
-          property: host
+        value: https://ksd-backend-api.onrender.com
       - key: VITE_AUSTRALIA_URL
-        fromService:
-          type: web
-          name: ksd-australia-site
-          property: host
+        value: https://ksd-australia-site.onrender.com
