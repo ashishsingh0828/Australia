@@ -367,7 +367,7 @@
   height: 40px;
   border-radius: 0 !important;
   color: #ffffff;
-  background: var(--navy);
+  background: var(--green, #157A3C);
   transition: transform 0.7s var(--ease), background 0.5s, color 0.5s;
 }
 .wc.is-visible .wc__cta:hover {
@@ -380,7 +380,7 @@
 }
 .wc__cta:hover .wc__cta-icon {
   color: #ffffff;
-  background: var(--navy);
+  background: var(--orange, #E67E22);
   transform: rotate(45deg);
 }
 .wc__cta:active {
