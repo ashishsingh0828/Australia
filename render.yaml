@@ -26,9 +26,9 @@ services:
       - key: SITES
         value: australia
       - key: ADMIN_EMAIL
-        value: admin
+        value: admin@ksdhomes.com.au
       - key: ADMIN_PASSWORD
-        value: ksd@123
+        value: India007$
       - key: CORS_ORIGINS
         value: "*"
       - key: EMAIL_USER
@@ -36,7 +36,9 @@ services:
       - key: EMAIL_PASS
         value: abcdefghijklmnop
       - key: NOTIFICATION_EMAIL
-        value: ashishsingh0828@gmail.com
+        value: admin@ksdhomes.com.au
+      - key: ADMIN_URL
+        value: https://ksd-australia-site.onrender.com/admin
 
   # KSD website + admin on same host: / and /admin
   - type: web
