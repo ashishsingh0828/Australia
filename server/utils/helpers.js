@@ -16,7 +16,6 @@ async function uniqueSlug(Model, site, title, ignoreId) {
 }
 
 const BLOCKED = new Set(["id", "_id", "site", "slug", "createdAt", "updatedAt", "__v"]);
-const BOOLEAN_FIELDS = new Set(["published", "featured", "frontBackOnly"]);
 const badKey = (k) => BLOCKED.has(k) || k.startsWith("$") || k.startsWith("__") || k.includes(".");
 
 /* Merge a form submission (text fields + uploaded files) into an item.
@@ -36,9 +35,8 @@ function apply(item, body = {}, files = []) {
   const out = { ...item };
   for (const [k, v] of Object.entries(body)) {
     if (badKey(k)) continue;
-    const isBool = BOOLEAN_FIELDS.has(k); // admin switches arrive as the strings "true" / "false"
-    let val = isBool ? String(v) === "true" : typeof v === "string" ? v.replace(/\r\n/g, "\n") : v; // multipart turns \n into \r\n
-    if (!isBool && typeof val === "string") val = parseMaybeJson(val);
+    let val = k === "published" ? String(v) === "true" : typeof v === "string" ? v.replace(/\r\n/g, "\n") : v; // multipart turns \n into \r\n
+    if (k !== "published" && typeof val === "string") val = parseMaybeJson(val);
     if (out[k] && out[k] !== val) removeUpload(out[k]);
     out[k] = val;
   }
